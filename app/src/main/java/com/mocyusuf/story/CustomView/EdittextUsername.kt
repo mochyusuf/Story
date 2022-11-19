@@ -47,8 +47,6 @@ class EdittextUsername : AppCompatEditText {
             override fun afterTextChanged(p0: Editable?) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // Password validation
-                // Display error automatically if the password doesn't meet certain criteria
                 if (!s.isNullOrEmpty() && s.length < 2)
                     error = context.getString(R.string.error_username)
             }

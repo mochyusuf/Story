@@ -6,25 +6,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
-import com.mocyusuf.story.Data.DataRepository
 import com.mocyusuf.story.R
-import com.mocyusuf.story.Remote.Network.ApiClient
 import com.mocyusuf.story.Utils.Message
 import com.mocyusuf.story.Utils.NetworkResult
-import com.mocyusuf.story.Utils.ViewModelFactory
 import com.mocyusuf.story.ViewModel.LoginRegisterViewModel
 import com.mocyusuf.story.databinding.ActivityRegisterBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class Register : AppCompatActivity() {
     private val binding: ActivityRegisterBinding by lazy {
         ActivityRegisterBinding.inflate(layoutInflater)
     }
-    private lateinit var viewModel: LoginRegisterViewModel
+    private val viewModel: LoginRegisterViewModel by viewModels()
     private var registerJob: Job = Job()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,10 +31,8 @@ class Register : AppCompatActivity() {
         setContentView(binding.root)
         supportActionBar?.title = resources.getString(R.string.register)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val dataRepository = DataRepository(ApiClient.getInstance())
-        viewModel = ViewModelProvider(this, ViewModelFactory(dataRepository))[LoginRegisterViewModel::class.java]
-        setData()
 
+        setData()
         binding.tvSignIn.setOnClickListener {
             startActivity(Intent(this, Login::class.java))
             finish()
@@ -52,9 +49,9 @@ class Register : AppCompatActivity() {
 
         val title = ObjectAnimator.ofFloat(binding.textView, View.ALPHA, 1f).setDuration(500)
         val desc = ObjectAnimator.ofFloat(binding.textView2, View.ALPHA, 1f).setDuration(500)
-        val edtName = ObjectAnimator.ofFloat(binding.edtUsername, View.ALPHA, 1f).setDuration(500)
-        val edtEmail = ObjectAnimator.ofFloat(binding.edtEmail, View.ALPHA, 1f).setDuration(500)
-        val edtPass = ObjectAnimator.ofFloat(binding.edtPassword, View.ALPHA, 1f).setDuration(500)
+        val edtName = ObjectAnimator.ofFloat(binding.editUsername, View.ALPHA, 1f).setDuration(500)
+        val edtEmail = ObjectAnimator.ofFloat(binding.editEmail, View.ALPHA, 1f).setDuration(500)
+        val edtPass = ObjectAnimator.ofFloat(binding.editPassword, View.ALPHA, 1f).setDuration(500)
         val btnRegister = ObjectAnimator.ofFloat(binding.btnRegister, View.ALPHA, 1f).setDuration(500)
 
         AnimatorSet().apply {
@@ -66,9 +63,9 @@ class Register : AppCompatActivity() {
     private fun setData() {
         binding.apply {
             btnRegister.setOnClickListener {
-                val name = binding.edtUsername.text.toString().trim()
-                val email = binding.edtEmail.text.toString().trim()
-                val password = binding.edtPassword.text.toString().trim()
+                val name = binding.editUsername.text.toString().trim()
+                val email = binding.editEmail.text.toString().trim()
+                val password = binding.editPassword.text.toString().trim()
                 if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(name)) {
                     Message.setMessage(this@Register, getString(R.string.warning_input))
                 } else {

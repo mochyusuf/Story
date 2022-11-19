@@ -42,10 +42,19 @@
     <string name="image_register">Gambar Daftar</string>
     <string name="start_now">Mulai Sekarang</string>
     <string name="description_menu2">Saat harimu berat maka aplikasi ini solusinya</string>
-    <string name="title_menu3">Selamat Datang</string>
+    <string name="let_start">Mari Mulai</string>
     <string name="description_menu3">Mari kita mulai dengan aplikasi cerita saya, semoga harimu menyenangkan</string>
-    <string name="title_menu2">Daftar App</string>
+    <string name="title_menu2">Ringan dan Mudah</string>
     <string name="image_welcome">Gambar selamat datang</string>
     <string name="description_menu1">Mau cerita sesuatu yang berat, tenang aja aplikasi ini solusinya hehe</string>
-    <string name="title_menu1">Login Ke App</string>
+    <string name="title_menu1">Aplikasi yang mudah dan rumit</string>
+    <string name="share_location">Bagikan Lokasi</string>
+    <string name="location_message">Silahkan aktifkan Lokasi anda</string>
+    <string name="permission_location_warning">Lokasi Tidak Di izinkan</string>
+    <string name="warning_active_location">Silahkan aktifkan lokasi anda</string>
+    <string name="story_location">Lokasi Cerita</string>
+    <string name="maps">Peta</string>
+    <string name="home">Beranda</string>
+    <string name="language_settings">Pengaturan Bahasa</string>
+    <string name="story">Cerita</string>
 </resources>

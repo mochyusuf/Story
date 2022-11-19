@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mocyusuf.story">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -13,7 +15,18 @@
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="18" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+
+            <category android:name="android.intent.category.BROWSABLE" />
+
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
     <application
+        android:name=".StoryApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -22,7 +35,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Story"
-        tools:targetApi="31">
+        tools:targetApi="33">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCZqfd1Kh1KoHfPmIlQuEdxCmE5cnRZMpc" />
+
+        <activity android:name=".Utils.HiltTestActivity" android:exported="false"/>
+
         <activity
             android:name="com.mocyusuf.story.Activity.Welcome"
             android:exported="false">
@@ -66,7 +86,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name="com.mocyusuf.story.MainActivity"
+            android:name="com.mocyusuf.story.Activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

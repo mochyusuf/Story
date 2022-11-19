@@ -3,11 +3,10 @@ package com.mocyusuf.story.Activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.mocyusuf.story.Local.Entity.Story
 import com.mocyusuf.story.R
-import com.mocyusuf.story.Remote.Model.Home.ListStory
 import com.mocyusuf.story.databinding.ActivityDetailBinding
 
-@Suppress("DEPRECATION")
 class Detail : AppCompatActivity() {
     private val binding: ActivityDetailBinding by lazy {
         ActivityDetailBinding.inflate(layoutInflater)
@@ -21,7 +20,7 @@ class Detail : AppCompatActivity() {
         fetchData()
     }
     private fun fetchData() {
-        val i = intent.getParcelableExtra<ListStory>(EXTRA_ITEM)
+        val i = intent.getParcelableExtra<Story>(EXTRA_ITEM)
         binding.apply {
             tvName.text = i?.name
             tvDescription.text = i?.description

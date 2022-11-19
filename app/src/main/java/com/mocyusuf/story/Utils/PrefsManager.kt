@@ -11,7 +11,8 @@ class PrefsManager(context: Context) : Krate {
     override val sharedPreferences: SharedPreferences =
         context.applicationContext.getSharedPreferences("prefs_manager", Context.MODE_PRIVATE)
 
-    var splash by booleanPref().withDefault(false)
+    var exampleBoolean by booleanPref().withDefault(false)
+    var isExampleLogin by booleanPref().withDefault(false)
     var token by stringPref().withDefault("")
 
     fun clear() {

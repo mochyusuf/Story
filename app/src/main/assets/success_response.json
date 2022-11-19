@@ -1,0 +1,15 @@
+{
+  "error": false,
+  "message": "Stories fetched successfully",
+  "listStory": [
+    {
+      "id": "story-FvU4u0Vp2S3PMsFg",
+      "name": "Lorem",
+      "description": "Lorem Ipsum",
+      "photoUrl": "https://story-api.dicoding.dev/images/stories/photos-1641623658595_dummy-pic.png",
+      "createdAt": "2022-10-26T10:10:10.100Z",
+      "lat": -10.212,
+      "lon": -16.002
+    }
+  ]
+}

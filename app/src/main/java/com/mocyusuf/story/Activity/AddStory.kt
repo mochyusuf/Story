@@ -6,37 +6,46 @@ import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.coroutineScope
-import com.mocyusuf.story.Data.DataRepository
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.mocyusuf.story.R
-import com.mocyusuf.story.Remote.Network.ApiClient
 import com.mocyusuf.story.Utils.*
 import com.mocyusuf.story.ViewModel.UploadStoryViewModel
 import com.mocyusuf.story.databinding.ActivityAddStoryBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import timber.log.Timber
 import java.io.File
 
+@AndroidEntryPoint
 class AddStory : AppCompatActivity() {
     private val binding: ActivityAddStoryBinding by lazy {
         ActivityAddStoryBinding.inflate(layoutInflater)
     }
     private var getFile: File? = null
     private var uploadJob: Job = Job()
-    private lateinit var viewModel: UploadStoryViewModel
-    private lateinit var prefsManager: PrefsManager
+    private val viewModel: UploadStoryViewModel by viewModels()
+    private var location: Location? = null
 
+    private lateinit var prefsManager: PrefsManager
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var currentPhotoPath: String
 
     override fun onRequestPermissionsResult(
@@ -63,11 +72,8 @@ class AddStory : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.add_story)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         prefsManager = PrefsManager(this)
-        val dataRepository = DataRepository(ApiClient.getInstance())
-        viewModel = ViewModelProvider(
-            this,
-            ViewModelFactory(dataRepository)
-        )[UploadStoryViewModel::class.java]
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         permissionGranted()
         binding.btnCamera.setOnClickListener {
             startTakePhoto()
@@ -80,6 +86,13 @@ class AddStory : AppCompatActivity() {
                 uploadStory(prefsManager.token)
             } else {
                 Message.setMessage(this, getString(R.string.warning_upload))
+            }
+        }
+        binding.switchLocation.setOnCheckedChangeListener {_, isChecked ->
+            if(isChecked) {
+                getLastLocation()
+            } else {
+                location = null
             }
         }
     }
@@ -95,20 +108,73 @@ class AddStory : AppCompatActivity() {
         }
     }
 
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        Timber.d("$permissions")
+        when {
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                getLastLocation()
+            }
+            else -> {
+                Message.setMessage(this, resources.getString(R.string.permission_location_warning))
+                binding.switchLocation.isChecked = false
+            }
+        }
+    }
+
+    private fun getLastLocation() {
+        if(ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        ){
+            fusedLocationClient.lastLocation.addOnSuccessListener {
+                if(it != null) {
+                    location = it
+                    Timber.tag("getLastLocation").d("${it.latitude}, ${it.longitude}")
+                } else {
+                    Message.setMessage(this, resources.getString(R.string.location_message))
+                    binding.switchLocation.isChecked = false
+                }
+            }
+        } else {
+            requestPermissionLauncher.launch(
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
+
     private fun uploadStory(auth: String) {
         setLoadingState(true)
         val file = reduceFileImage(getFile as File)
+        val requestImageFile = file.asRequestBody("image/jpg".toMediaTypeOrNull())
+        val imageMultipart = MultipartBody.Part.createFormData(
+            "photo",
+            file.name,
+            requestImageFile
+        )
         val description = binding.edtDescription.text.toString().trim()
+
+        var lat : String? = null
+        var lon : String? = null
+
+        if(location != null) {
+            lat = location?.latitude.toString()
+            lon = location?.longitude.toString()
+        }
+
         lifecycle.coroutineScope.launchWhenResumed {
             if (uploadJob.isActive) uploadJob.cancel()
             uploadJob = launch {
-                viewModel.uploadStory(auth, description, file).collect { result ->
+                viewModel.uploadStory(auth, description, lat, lon, imageMultipart).collect { result ->
                     when (result) {
                         is NetworkResult.Success -> {
                             setLoadingState(false)
                             Message.setMessage(this@AddStory, getString(R.string.success_add_story))
                             startActivity(Intent(this@AddStory, Home::class.java))
-                            finish()
+                            finishAffinity()
                         }
                         is NetworkResult.Loading -> {
                             setLoadingState(true)
@@ -116,6 +182,7 @@ class AddStory : AppCompatActivity() {
                         is NetworkResult.Error -> {
                             setLoadingState(false)
                             Message.setMessage(this@AddStory, getString(R.string.error_add_story))
+                            Timber.tag("Error Upload : ").d(result.message)
                         }
                     }
                 }

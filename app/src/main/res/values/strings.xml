@@ -8,7 +8,7 @@
     <string name="error_password">Password must be 6 characters</string>
     <string name="error_register">Failed to register account</string>
     <string name="check">Check your email or password</string>
-    <string name="story" translatable="false">Story</string>
+    <string name="storyapp" translatable="false">Story</string>
     <string name="we_all_have_a_story">We all have a story</string>
     <string name="sign_in">Sign In</string>
     <string name="dont_have_account">Don\'t have an account?</string>
@@ -44,10 +44,19 @@
     <string name="image_register">Image Register</string>
     <string name="start_now">Start Now</string>
     <string name="description_menu2">When your day is heavy then this application is the solution</string>
-    <string name="title_menu3">Welcome</string>
+    <string name="let_start">Let\'s start</string>
     <string name="description_menu3">Let start with application my story, have god day to you are</string>
-    <string name="title_menu2">Sign Up App</string>
+    <string name="title_menu2">Easy and easy</string>
     <string name="image_welcome">image_welcome</string>
     <string name="description_menu1">You want to tell something heavy, calm down this application is the solution hehe</string>
-    <string name="title_menu1">Login To App</string>
+    <string name="title_menu1">Easy and complicated application</string>
+    <string name="share_location">Share Location</string>
+    <string name="location_message">Please Activated your Location</string>
+    <string name="permission_location_warning">Location not Allowed</string>
+    <string name="warning_active_location">Please active your location</string>
+    <string name="story_location">Story Location</string>
+    <string name="maps">Maps</string>
+    <string name="home">Home</string>
+    <string name="language_settings">Language Settings</string>
+    <string name="story">Story</string>
 </resources>

@@ -1,0 +1,95 @@
+--------AndroidTest--------
+========Test HomeFragmentTest=========
+A. Test HomeFragmentTest
+-Success
+    1. Recyclerview akan tampil ketika sukses mengambil data dari API
+    2. Memastikan toolbar aktif
+    2. Memastikan response name sesuai
+    2. Memastikan keterangan tv_not_found dan tv_error tidak tampil ketika data berhasil diambil
+-Empty Or Error
+    1. Memastikan tv_not_found dan tv_error tampil ketika data yang diambil dari api kosong
+	
+--------UnitTest ViewModel--------
+========Test HomeViewModel ViewModel=========
+A. Test HomeViewModel ViewModel
+-Success
+    1. Memastikan method getStories dapat dipanggil
+    2. Memastikan data story tidak sama dengan null
+    3. Memastikan kesamaan data response antara data dummy dengan yang asli
+    4. Memastikan ukuran data dummy lebih dari 0
+-Error
+    1. Memastikan method getStories dapat dipanggil
+    2. Memastikan data story tidak sama dengan null
+    3. Memastikan kesamaan data response antara data dummy dengan yang asli
+    4. Memastikan ukuran data dummy sama dengan 0
+
+========Test LoginRegister ViewModel=========
+B. Test LoginRegister ViewModel
+-Login Success - Network Success
+    1. Memastikan login success
+    2. Memastikan data tidak sama dengan null
+    3. Memastikan kesamaan response antara data dummy dengan yang asli
+    4. Memastikan method login dapat dipanggil
+-Login Error - Network Error
+    1. Memastikan login success
+    2. Memastikan data sama dengan null
+    3. Memastikan method login dapat dipanggil
+-Register Success - Network Success
+    1. Memastikan register success
+    2. Memastikan data tidak sama dengan null ketika gagal
+    3. Memastikan kesamaan response antara data dummy dengan yang asli
+    4. Memastikan method register dapat dipanggil
+-Register Error - Network Error
+    1. Memastikan register gagal
+    2. Memastikan data sama dengan null ketika gagal
+    3. Memastikan method register dapat dipanggil
+
+========Test MapsViewModel ViewModel=========
+C. Test MapsViewModel
+-Success
+    1. Memastikan data tidak sama dengan null
+    2. Memastikan kesamaan data response antara data dummy dengan yang asli
+    3. Memastikan method getStories dapat dipanggil
+-Error
+    1. Memastikan data sama dengan null ketika gagal
+    2. Memastikan Method getstories dapat dipanggil
+
+========Test UploadStoryViewModel=========
+D. Test UploadStoryViewModel
+-Success
+    1. Memastikan dapat berhasil ketika upload file
+    2. Memastikan data tidak sama dengan null
+    3. Memastikan kesamaan data response antara data dummy dengan yang asli
+    4. Memastikan method uploadStory datap dipanggil
+-Error
+    1. Memastikan gagal upload file
+    2. Memastikan data response tidak sama dengan server asli
+	
+--------UnitTest Repository--------
+========Test Story Repository=========
+A. Test method getStories
+    1. Memastikan method getStories dapat dipanggil
+    2. Memastikan data story tidak sama dengan null
+    3. Memastikan kesamaan ukuran data asli sama dengan data dummy
+
+======Test DataRepository==========
+B. Test method LoginRegister
+-Success
+    1. Memastikan login register success
+    2. Memastikan data tidak sama dengan null
+    3. Memastikan kesamaan response antara data dummy dengan yang asli
+    4. Memastikan method login register dapat dipanggil
+-Error
+    1. Memastikan login register gagal
+    2. Memastikan data sama dengan null ketika gagal
+    3. Memastikan Method login register dapat dipanggil
+
+C. Test method UploadStory
+-Success
+    1. Memastikan dapat berhasil ketika upload file
+    2. Memastikan data tidak sama dengan null
+    3. Memastikan kesamaan data response antara data dummy dengan yang asli
+    4. Memastikan method uploadStory datap dipanggil
+-Error
+    1. Memastikan gagal upload file
+    2. Memastikan data response tidak sama dengan server asli

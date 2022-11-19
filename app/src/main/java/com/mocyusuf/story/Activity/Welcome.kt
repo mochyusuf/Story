@@ -8,7 +8,6 @@ import com.mocyusuf.story.R
 import com.mocyusuf.story.Utils.PrefsManager
 
 class Welcome : AppCompatActivity() {
-
     private lateinit var prefsManager: PrefsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +18,7 @@ class Welcome : AppCompatActivity() {
         val btnStart = findViewById<Button>(R.id.btn_start)
         btnStart.setOnClickListener {
             startActivity(Intent(this, Login::class.java))
+            prefsManager.isExampleLogin = true
             finish()
         }
     }

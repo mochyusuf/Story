@@ -1,54 +1,44 @@
 package com.mocyusuf.story.Data
 
+import com.mocyusuf.story.Local.Entity.Story
 import com.mocyusuf.story.Remote.Model.Home.ResponseHome
 import com.mocyusuf.story.Remote.Model.Login.ResponseLogin
 import com.mocyusuf.story.Remote.Model.Register.ResponseRegister
 import com.mocyusuf.story.Remote.Model.Upload.ResponseUploadStory
-import com.mocyusuf.story.Remote.Network.ApiService
+import com.mocyusuf.story.Remote.Network.ApiConfig
 import com.mocyusuf.story.Utils.NetworkResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.HttpException
-import java.io.File
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class DataRepository constructor(private val apiService: ApiService) {
+@Singleton
+class DataRepository @Inject constructor(
+    private val dataSource: DataSource
+) : ApiConfig() {
 
-    suspend fun getStories(auth: String) : Flow<NetworkResult<ResponseHome>> =
+    suspend fun getStoriesLocation(auth: String): Flow<NetworkResult<ResponseHome>> =
         flow {
-            try {
-                val generateToken = generateAuthorization(auth)
-                val response = apiService.getStories(generateToken)
-                emit(NetworkResult.Success(response))
-            } catch (e : Exception) {
-                val ex = (e as? HttpException)?.response()?.errorBody()?.string()
-                emit(NetworkResult.Error(ex.toString()))
-            }
+            emit(safeApiCall {
+                dataSource.getStoriesLocation(generateAuthorization(auth))
+            })
         }.flowOn(Dispatchers.IO)
 
-    suspend fun uploadStory(auth: String, description: String, file: File) : Flow<NetworkResult<ResponseUploadStory>> =
+    suspend fun uploadStory(
+        auth: String,
+        description: String,
+        lat: String?,
+        lon: String?,
+        file: MultipartBody.Part
+    ): Flow<NetworkResult<ResponseUploadStory>> =
         flow {
-            try {
+            emit(safeApiCall {
                 val generateToken = generateAuthorization(auth)
-                val desc = description.toRequestBody("text/plain".toMediaType())
-                val requestImageFile = file.asRequestBody("image/jpg".toMediaTypeOrNull())
-                val imageMultipart = MultipartBody.Part.createFormData(
-                    "photo",
-                    file.name,
-                    requestImageFile
-                )
-                val response = apiService.uploadStory(generateToken,imageMultipart,desc)
-                emit(NetworkResult.Success(response))
-            } catch (e : Exception) {
-                val ex = (e as? HttpException)?.response()?.errorBody()?.string()
-                emit(NetworkResult.Error(ex.toString()))
-            }
+                dataSource.uploadStory(generateToken, description, lat, lon, file)
+            })
         }.flowOn(Dispatchers.IO)
 
     suspend fun register(
@@ -56,29 +46,20 @@ class DataRepository constructor(private val apiService: ApiService) {
         email: String,
         password: String
     ): Flow<NetworkResult<ResponseRegister>> = flow {
-        try {
-            val response = apiService.register(name, email, password)
-            emit(NetworkResult.Success(response))
-        } catch(e : Exception) {
-            e.printStackTrace()
-            emit(NetworkResult.Error(e.toString()))
-        }
+        emit(safeApiCall {
+            dataSource.register(name, email, password)
+        })
     }.flowOn(Dispatchers.IO)
 
-    suspend fun login(
-        email: String,
-        password: String
-    ): Flow<NetworkResult<ResponseLogin>> = flow {
-        try {
-            val response = apiService.login(email, password)
-            emit(NetworkResult.Success(response))
-        } catch(e : Exception) {
-            e.printStackTrace()
-            emit(NetworkResult.Error(e.toString()))
-        }
-    }.flowOn(Dispatchers.IO)
+    suspend fun login(email: String, password: String): Flow<NetworkResult<ResponseLogin>> =
+        flow {
+            emit(safeApiCall {
+                dataSource.login(email, password)
+            })
+        }.flowOn(Dispatchers.IO)
 
-    private fun generateAuthorization(token: String) : String {
+
+    private fun generateAuthorization(token: String): String {
         return "Bearer $token"
     }
 

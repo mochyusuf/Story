@@ -3,12 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/settings"
-        android:title="@string/settings"
+        android:id="@+id/home"
+        android:title="@string/home"
+        android:icon="@drawable/ic_baseline_home_24"
         />
 
     <item
-        android:id="@+id/logout"
-        android:title="@string/log_out"
+        android:id="@+id/maps"
+        android:title="@string/maps"
+        android:icon="@drawable/ic_baseline_map_24"
+        />
+
+    <item
+        android:id="@+id/settings"
+        android:title="@string/settings"
+        android:icon="@drawable/ic_baseline_settings_24"
         />
 </menu>

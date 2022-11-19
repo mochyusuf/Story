@@ -44,7 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <com.mocyusuf.story.CustomView.EdittextUsername
-        android:id="@+id/edt_username"
+        android:id="@+id/edit_username"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="34dp"
@@ -59,7 +59,7 @@
         />
 
     <com.mocyusuf.story.CustomView.EdittextEmail
-        android:id="@+id/edt_email"
+        android:id="@+id/edit_email"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
@@ -73,10 +73,10 @@
         android:alpha="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_username" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_username" />
 
     <com.mocyusuf.story.CustomView.EdittextPassword
-        android:id="@+id/edt_password"
+        android:id="@+id/edit_password"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:layout_marginTop="14dp"
@@ -85,9 +85,9 @@
         android:paddingEnd="8dp"
         android:textSize="14sp"
         android:alpha="0"
-        app:layout_constraintEnd_toEndOf="@+id/edt_email"
-        app:layout_constraintStart_toStartOf="@+id/edt_email"
-        app:layout_constraintTop_toBottomOf="@+id/edt_email" />
+        app:layout_constraintEnd_toEndOf="@+id/edit_email"
+        app:layout_constraintStart_toStartOf="@+id/edit_email"
+        app:layout_constraintTop_toBottomOf="@+id/edit_email" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_register"
@@ -98,9 +98,9 @@
         android:text="@string/register"
         android:alpha="0"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="@+id/edt_password"
-        app:layout_constraintStart_toStartOf="@+id/edt_password"
-        app:layout_constraintTop_toBottomOf="@+id/edt_password" />
+        app:layout_constraintEnd_toEndOf="@+id/edit_password"
+        app:layout_constraintStart_toStartOf="@+id/edit_password"
+        app:layout_constraintTop_toBottomOf="@+id/edit_password" />
 
     <TextView
         android:id="@+id/textView3"
